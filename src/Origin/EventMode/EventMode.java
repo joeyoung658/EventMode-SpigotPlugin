@@ -2,6 +2,7 @@ package Origin.EventMode;
 
 import England.Origin.FirstPlugin.Data.ChangeData;
 import England.Origin.FirstPlugin.Data.PlayerNameData;
+import England.Origin.FirstPlugin.Player.Freeze;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -213,4 +214,80 @@ public class EventMode {
             return true;
         }
     }
+
+    /**
+     * Toggles natural health regen for all players within the event
+     * @return
+     */
+    public boolean toogleHealthRegen(){
+        if (healthregen == true) {
+            healthregen = false;
+            return true;
+        } else {
+            healthregen = true;
+            return false;
+        }
+    }
+
+    /**
+     * Returns the amount if players within the whole event
+     * @return
+     */
+    public int eventSize(){
+        return currentEvent.size();
+    }
+
+    /**
+     * TogglesPVP on/off for all players within the event
+     * @return False - PVP toggled off / True PVP toggle on
+     */
+    public boolean toggleAllPlayersPVP(){
+        //todo Handle this within the eventmode plugin rather than pushing to FirstPlugin
+        if (PVPToggledEM) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (currentEvent.contains(p.getUniqueId())) {
+                    //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has toggled your !");
+                    Bukkit.dispatchCommand(p, "togglepvp");
+                }
+            }
+            PVPToggledEM = false;
+            return false;
+        } else {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (currentEvent.contains(p.getUniqueId())) {
+                    // p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has toggled into PVP mode!");
+                    Bukkit.dispatchCommand(p, "togglepvp");
+                }
+            }
+            PVPToggledEM = true;
+            return true;
+        }
+    }
+
+    public boolean freezeAllPlayers(){
+        //todo handle this within eventmode plugin as could cause issues with main freeze from FirstPLugin
+        if (Freeze.Frozen.isEmpty()) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (currentEvent.contains(p.getUniqueId())) {
+                    if (!(Freeze.Frozen.contains(p.getUniqueId()))) {
+                        Freeze.Frozen.add(p.getUniqueId());
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has frozen you!");
+                    }
+
+                }
+            }
+            return true;
+        } else {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (currentEvent.contains(p.getUniqueId())) {
+                    if (Freeze.Frozen.contains(p.getUniqueId())) {
+                        Freeze.Frozen.remove(p.getUniqueId());
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has unfrozen you!");
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
 }

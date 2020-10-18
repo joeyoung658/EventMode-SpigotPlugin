@@ -255,6 +255,8 @@ public class pvpe implements Listener, CommandExecutor {
                         }
                         PVPToggledEM = false;
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA +  " You have toggled PVP off for the event");
+
+
                     } else {
                         for (Player p : Bukkit.getOnlinePlayers()) {
                             if (currentEvent.contains(p.getUniqueId())) {
