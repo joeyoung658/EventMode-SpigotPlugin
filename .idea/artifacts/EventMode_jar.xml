@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="EventMode:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EventMode_jar</output-path>
+    <root id="archive" name="EventMode.jar">
+      <element id="module-output" name="EventMode" />
+    </root>
+  </artifact>
+</component>

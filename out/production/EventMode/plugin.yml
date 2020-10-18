@@ -1,0 +1,29 @@
+name: EventMode
+version: 1
+author: Origin
+main: Origin.EventMode.Main
+api-version: 1.16
+depend: [FirstPlugin]
+commands:
+  eventmode:
+      useage: /<command>
+      aliases: [em]
+  apvpe:
+      description: Admin pvp event commands
+      useage: /<command>
+      aliases: [aeventmode, aem]
+  eventjoin:
+      description: Allows a player to join an event when its open
+  eventleave:
+      description: Allows a player to leave an event
+  teams:
+      description: Allows an admin to create team(s)
+      aliases: [team]
+  tc:
+      description: Enables team members to communicate
+  ec:
+      description: Enables event members to communicate
+permissions:
+    <fp>.apvpe:
+      description: 'Admin commands for pvp event.'
+      default: op
