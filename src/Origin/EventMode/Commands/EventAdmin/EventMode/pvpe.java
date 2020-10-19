@@ -309,7 +309,6 @@ public class pvpe implements Listener, CommandExecutor {
                                     DenyBlockBreak.DenyBlockBreak.add(p);
                                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can no longer place/break blocks within this event.");
                                 }
-
                             }
                         }
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "You have prevented everyone within the event from breaking blocks.");
@@ -367,7 +366,6 @@ public class pvpe implements Listener, CommandExecutor {
 
                     if (!(currentEvent.contains(((Player) sender).getUniqueId()))) {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + target.getDisplayName() + " has joined the event!");
-
                     }
 
                     target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has entered you into an event.");

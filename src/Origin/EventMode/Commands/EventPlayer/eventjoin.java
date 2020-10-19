@@ -20,9 +20,6 @@ public class eventjoin implements CommandExecutor {
 
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
-
-
         if (cmd.getName().equalsIgnoreCase("eventjoin")) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  + " This command can only be run by a player!");

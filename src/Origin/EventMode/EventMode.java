@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
+import static England.Origin.FirstPlugin.Data.PVPToggleContains.PVPtoggle;
 import static Origin.EventMode.Contants.*;
 
 public class EventMode {
@@ -79,6 +80,9 @@ public class EventMode {
                 " &4Clear your inventory before you join the event! Your items and armour will be removed."));
     }
 
+    public boolean isEventOpen(){
+        return eventopen;
+    }
 
     /**
      * Closes the current event that is open and resets all the constant variables
@@ -290,4 +294,142 @@ public class EventMode {
         }
     }
 
+    /**
+     * Toggles of the event is locked or closed.
+     * @return
+     */
+    public boolean toggleEventLock(){
+        if (eventlocked) {
+            eventlocked = false;
+            return false;
+        } else {
+            eventlocked = true;
+            return true;
+        }
+    }
+
+    public boolean isEventLocked(){
+        return eventlocked;
+    }
+
+    public boolean isPlayerInEvent(Player player){
+        if (currentEvent.contains(player.getUniqueId())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Adds a player to the current active event
+     * @param target Player in which should be added to the event
+     * @param eventJoinWarningBypass If set to true, the player will not be warned about thier inventory being cleared
+     * @param eventLockBypass If set to true, a player will be able to join regardless of if the event is locked
+     * @return
+     */
+    public boolean addPlayerToEvent(Player target, Boolean eventJoinWarningBypass, Boolean eventLockBypass){
+        if ((!(isEventOpen())) && (isPlayerInEvent(target))){
+            return false;
+        }
+        if (!(eventLockBypass)){
+            if (isEventLocked()){
+                return false;
+            }
+        }
+        if (!(eventJoinWarningBypass)){
+            if (!(EventJoinWarning.contains(target))){
+                EventJoinWarning.add(target);
+                target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4WARNING&e]&f" +
+                        " &4Clear your inventory before you join the event! Your items and armour will be removed!"));
+                target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f" +
+                        " &aAre you sure you want to join the event? " +  "&aType \"&2/eventjoin&a\" again to join, or \"&2/eventleave&a\" to cancel."));
+                return false;
+            } else {
+                EventJoinWarning.remove(target);
+            }
+        }
+        currentEvent.add(target.getUniqueId());
+        target.teleport(LobbyLocation);
+        if (PVPToggledEM){
+            if (!(PVPtoggle(target.getName()))) {
+                Bukkit.dispatchCommand(target.getPlayer(), "togglepvp");
+            }
+        } else {
+            if (PVPtoggle(target.getName())) {
+                Bukkit.dispatchCommand(target.getPlayer(), "togglepvp");
+            }
+        }
+        if (!(PlayerNameData.filegetdata(target.getPlayer(), "keepinven") == null)) {
+            KeepInvenBeforeEvent.add(target.getPlayer());
+        }
+        if (KeepInvenToggledEM) {
+            if (PlayerNameData.filegetdata(target.getPlayer(), "keepinven") == null) {
+                ChangeData.changedatac(target.getPlayer(), "keepinven", "true");
+            }
+
+        } else {
+            if (!(PlayerNameData.filegetdata(target.getPlayer(), "keepinven") == null)) {
+                ChangeData.changedatac(target.getPlayer(), "keepinven", null);
+            }
+        }
+        if (!(target.getPlayer().getGameMode().equals(eventGamemode))) {
+            target.getPlayer().setGameMode(eventGamemode);
+        }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (currentEvent.contains(p.getUniqueId()))
+            {
+                p.sendMessage( target.getDisplayName() +  ChatColor.AQUA + " has joined the event!");
+            }
+            if (EventLeaders.contains(p)){
+                p.sendMessage( target.getDisplayName() +  ChatColor.AQUA +  " has joined the event. "  + currentEvent.size() + " players are now in Event mode.");
+            }
+        }
+        target.getInventory().clear();
+        target.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +ChatColor.AQUA + "Your inventory has been cleared, if you would like to leave the event at any point, type \"/eventleave\". You will be removed from the event and teleported to spawn.");
+        return true;
+    }
+
+    /**
+     * Removes a player from an event
+     * @param target
+     * @return
+     */
+    public boolean removePlayerFromEvent(Player target){
+        if (!(isEventOpen())){
+            return false;
+        }
+        if (EventJoinWarning.contains(target)){
+            EventJoinWarning.remove(target);
+            target.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +ChatColor.AQUA + "You have canceled your entry into the event!");
+            return false;
+        }
+        if (!(isPlayerInEvent(target))){
+            return false;
+        }
+        currentEvent.remove(target.getUniqueId());
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (currentEvent.contains(p.getUniqueId())) {
+                p.sendMessage(target.getDisplayName() + ChatColor.AQUA + " has left the event!");
+            }
+            if (EventLeaders.contains(p)){
+                p.sendMessage(target.getDisplayName() +  ChatColor.AQUA +  " has left the event. "  + currentEvent.size() + " players are now in Event mode.");
+            }
+        }
+        if (KeepInvenBeforeEvent.contains(target.getPlayer())){
+            if (PlayerNameData.filegetdata(target.getPlayer(), "keepinven") == null) {
+                ChangeData.changedatac(target.getPlayer(), "keepinven", "true");
+            }
+        } else {
+            if (!(PlayerNameData.filegetdata(target.getPlayer(), "keepinven") == null)) {
+                ChangeData.changedatac(target.getPlayer(), "keepinven", null);
+            }
+        }
+        target.getInventory().clear();
+        if (target.getGameMode() != GameMode.SURVIVAL) {
+            target.getPlayer().setGameMode(GameMode.SURVIVAL);
+        }
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawn " + target.getName());
+        target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Your inventory has been cleared, Command use has been restored! Thank you for being apart of the event.");
+        return true;
+    }
 }

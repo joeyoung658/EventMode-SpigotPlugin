@@ -4,15 +4,13 @@ package Origin.EventMode;
 import Origin.EventMode.Commands.EventAdmin.EventMode.Commands.*;
 import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminCommandHandler;
 import Origin.EventMode.Commands.EventAdmin.EventMode.apvpe;
-import Origin.EventMode.Commands.EventAdmin.EventMode.pvpe;
+import Origin.EventMode.Commands.EventAdmin.EventMode.eventModeAdminCmd;
+import Origin.EventMode.Commands.EventAdmin.Teams.teams;
 import Origin.EventMode.Commands.EventPlayer.eventChat;
 import Origin.EventMode.Commands.EventPlayer.eventjoin;
 import Origin.EventMode.Commands.EventPlayer.eventleave;
 import Origin.EventMode.Commands.EventTeams.teamChat;
-import Origin.EventMode.Commands.EventAdmin.Teams.teams;
 import Origin.EventMode.Listeners.*;
-import Origin.EventMode.Commands.EventAdmin.EventMode.eventModeAdminCmd;
-
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -64,6 +62,9 @@ public class Main extends JavaPlugin implements Listener {
         eventModeAdminCommands.register("list", new listCmd());
         eventModeAdminCommands.register("togglepvp", new togglePVPCmd());
         eventModeAdminCommands.register("freeze", new freezeAllPlayersCmd());
+        eventModeAdminCommands.register("lock", new toggleEventLock());
+        eventModeAdminCommands.register("add", new addPlayerToEventCmd());
+        eventModeAdminCommands.register("remove", new removePlayerFromEventCmd());
 
 
 
