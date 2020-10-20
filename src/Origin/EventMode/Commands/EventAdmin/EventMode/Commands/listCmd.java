@@ -14,7 +14,7 @@ public class listCmd implements EventModeAdminInterface
 {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-
+        //todo tidy command up
 
         Player p = (Player) sender;
 
@@ -28,8 +28,8 @@ public class listCmd implements EventModeAdminInterface
             stringOnline.append(Bukkit.getServer().getPlayer(currentEvent.get(i)).getDisplayName() + ", ");
         }
 
-        sender.sendMessage(ChatColor.AQUA + "There are currently, " + eventSize + " players in the event!");
-        sender.sendMessage(ChatColor.YELLOW + "All online players: " + ChatColor.RESET + stringOnline.toString());
+        p.sendMessage(ChatColor.AQUA + "There are currently, " + eventSize + " players in the event!");
+        p.sendMessage(ChatColor.YELLOW + "All online players: " + ChatColor.RESET + stringOnline.toString());
 
         return false;
     }

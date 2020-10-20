@@ -2,6 +2,7 @@ package Origin.EventMode;
 
 import England.Origin.FirstPlugin.Data.ChangeData;
 import England.Origin.FirstPlugin.Data.PlayerNameData;
+import England.Origin.FirstPlugin.Player.DenyBlockBreak;
 import England.Origin.FirstPlugin.Player.Freeze;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -442,4 +443,34 @@ public class EventMode {
         LobbyLocation = lobby;
     }
 
+
+    /**
+     * Toggles the players ability to break blocks whilst in a event
+     * @return True - Stops block breaking False - ALlows block breaking
+     */
+    public boolean toggleBlockBreak(){
+        //todo tidy this up
+        if (DenyBlockBreak.DenyBlockBreak.isEmpty()) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (currentEvent.contains(p.getUniqueId())) {
+                    if (!(DenyBlockBreak.DenyBlockBreak.contains(p.getUniqueId()))) {
+                        DenyBlockBreak.DenyBlockBreak.add(p);
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can no longer place/break blocks within this event.");
+                    }
+                }
+            }
+            return true;
+        } else {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (currentEvent.contains(p.getUniqueId())) {
+                    if (!(DenyBlockBreak.DenyBlockBreak.contains(p.getUniqueId()))) {
+                        DenyBlockBreak.DenyBlockBreak.remove(p);
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can now place/break blocks within this event.");
+                    }
+
+                }
+            }
+            return false;
+        }
+    }
 }

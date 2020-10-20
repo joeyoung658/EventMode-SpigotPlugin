@@ -33,9 +33,7 @@ public class eventleave implements CommandExecutor {
                             + ChatColor.AQUA + "Error: You're unable to leave the event at this time!");
                 }
             }
-
         }
-
         return true;
     }
 

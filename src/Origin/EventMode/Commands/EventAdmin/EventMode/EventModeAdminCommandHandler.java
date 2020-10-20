@@ -71,7 +71,7 @@ public class EventModeAdminCommandHandler implements CommandExecutor
                     return true;
                 } else {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f ")
-                            + ChatColor.AQUA + "That's not something you can do yet.");
+                            + ChatColor.AQUA + "That's not something you can do yet. Type /eventmode help for support.");
                     return true;
                 }
             }

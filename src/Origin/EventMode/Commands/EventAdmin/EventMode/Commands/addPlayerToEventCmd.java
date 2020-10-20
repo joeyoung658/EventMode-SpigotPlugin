@@ -11,8 +11,11 @@ import org.bukkit.entity.Player;
 public class addPlayerToEventCmd implements EventModeAdminInterface {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        //We don't have to check if the args length is equal to one, but you will have to check if it is greater than 1.
-        if(args.length > 1) return false;
+
+        if((args.length == 1) || args.length > 2){
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Error: Correct usage /eventmode [add] [plyaername]");
+            return false;
+        }
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " is offline!");
@@ -20,7 +23,6 @@ public class addPlayerToEventCmd implements EventModeAdminInterface {
         }
         Player p = (Player) sender;
         EventMode eventMode = new EventMode();
-        //todo broke
         boolean result =  eventMode.addPlayerToEvent(target,true, true);
 
         if (result){

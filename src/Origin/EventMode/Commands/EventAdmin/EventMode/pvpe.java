@@ -59,283 +59,295 @@ public class pvpe implements Listener, CommandExecutor {
                 }
 
 
-                if (args[0].equalsIgnoreCase("open")) {
-
-                    //Done
-                    if (eventopen) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event already open!");
-                        return false;
-                    }
-
-                    if (LobbyLocation == null) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: Please set a event lobby location before the event is opened." +
-                                " Ensure that the location is enclosed to players cannot escape!");
-                        return false;
-                    }
-
-                    EventLeaders.add(((Player) sender));
-                    eventopen = true;
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server-Announcement&e]&f" +
-                            " &aEvent participation has been opened! " + "&aType &2\"/eventjoin\" &aif you would like to join the event!"));
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4WARNING&e]&f" +
-                            " &4Clear your inventory before you join the event! Your items and armour will be removed."));
-
-                } else if (args[0].equalsIgnoreCase("close")) {
-
-                    if (!(eventopen)) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event already closed!");
-                        return false;
-                    }
-
-                    if (!(teams.isEmpty())) {
-                        teams.clear();
-                    }
-                    if (!(teamRespawnDelay.isEmpty())) {
-                        teamRespawnDelay.clear();
-                    }
-                    if (!(teamRespawnPoint.isEmpty())) {
-                        teamRespawnPoint.clear();
-                    }
-                    if (!(teamRespawnLimit.isEmpty())) {
-                        teamRespawnLimit.clear();
-                    }
-                    if (!(playerDeathCount.isEmpty())) {
-                        playerDeathCount.clear();
-                    }
-
-                    if (!(friendlyfire.isEmpty())){
-                        friendlyfire.clear();
-                    }
-
-                    if (!(KeepInvenBeforeEvent.isEmpty())){
-                        KeepInvenBeforeEvent.clear();
-                    }
-
-
-                    eventopen = false;
-                    eventlocked = false;
-                    eventlocation = null;
-                    LobbyLocation = null;
-                    EventLeaders.clear();
-
-                    eventGamemode = GameMode.SURVIVAL;
-
-
-
-                    KeepInvenToggledEM = false;
-
-
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (currentEvent.contains(p.getUniqueId())) {
-                            if (KeepInvenBeforeEvent.contains(p)){
-                                if (PlayerNameData.filegetdata(p, "keepinven") == null) {
-                                    ChangeData.changedatac(p, "keepinven", "true");
-                                }
-                            } else {
-                                if (!(PlayerNameData.filegetdata(p, "keepinven") == null)) {
-                                    ChangeData.changedatac(p, "keepinven", null);
-                                }
-                            }
-                            p.getInventory().clear();
-                            p.setGameMode(GameMode.SURVIVAL);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawn " + p.getName());
-                        }
-                    }
-                    currentEvent.clear();
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server-Announcement&e]&f" +
-                            " &aThe event has been closed! Thank you to everyone for participating, until next time!"));
-                    return false;
-
-                } else if (args[0].equalsIgnoreCase("heal")) {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (currentEvent.contains(p.getUniqueId())) {
-
-
-                            p.setHealth(20.0);
-                            p.setFoodLevel(20);
-
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has healed you!");
-                        }
-                    }
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've healed everyone within the event");
-
-
-                } else if (args[0].equalsIgnoreCase("tpall")) {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (currentEvent.contains(p.getUniqueId())) {
-
-                            p.teleport(((Player) sender).getLocation());
-
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has teleported you to his location!");
-
-                        }
-                    }
-
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've teleported everyone to you");
-
-                } else if (args[0].equalsIgnoreCase("clearinven")) {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (currentEvent.contains(p.getUniqueId())) {
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You inventory has been cleared by an admin");
-                            p.getInventory().clear();
-                        }
-                    }
-
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've cleared all inventories");
-
-                } else if (args[0].equalsIgnoreCase("keepinven")) {
-                    if (KeepInvenToggledEM){
-                        KeepInvenToggledEM = false;
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-                                if (!(PlayerNameData.filegetdata(p, "keepinven") == null)) {
-                                    ChangeData.changedatac(p, "keepinven", null);
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f ") +ChatColor.AQUA + "You will now drop your items upon death!");
-                                }
-                            }
-                        }
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have toggled keep inventory off for the event");
-                        return true;
-
-                    } else {
-                        KeepInvenToggledEM = true;
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-
-                                if (PlayerNameData.filegetdata(p, "keepinven") == null) {
-                                    ChangeData.changedatac(p, "keepinven", "true");
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f ") +ChatColor.AQUA + "You will no longer drop your items upon death!");
-                                }
-                            }
-                        }
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have toggled keep inventory on for the event");
-                        return true;
-                    }
-
-//                    for (Player p : Bukkit.getOnlinePlayers()) {
-//                        if (pvpeo.contains(p.getUniqueId())) {
+//                if (args[0].equalsIgnoreCase("open")) {
 //
-//                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "togglekeepinven " + p.getName());
+//                    //Done
+//                    if (eventopen) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event already open!");
+//                        return false;
+//                    }
+//
+//                    if (LobbyLocation == null) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: Please set a event lobby location before the event is opened." +
+//                                " Ensure that the location is enclosed to players cannot escape!");
+//                        return false;
+//                    }
+//
+//                    EventLeaders.add(((Player) sender));
+//                    eventopen = true;
+//                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server-Announcement&e]&f" +
+//                            " &aEvent participation has been opened! " + "&aType &2\"/eventjoin\" &aif you would like to join the event!"));
+//                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4WARNING&e]&f" +
+//                            " &4Clear your inventory before you join the event! Your items and armour will be removed."));
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("close")) {
+//
+//                    if (!(eventopen)) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event already closed!");
+//                        return false;
+//                    }
+//
+//                    if (!(teams.isEmpty())) {
+//                        teams.clear();
+//                    }
+//                    if (!(teamRespawnDelay.isEmpty())) {
+//                        teamRespawnDelay.clear();
+//                    }
+//                    if (!(teamRespawnPoint.isEmpty())) {
+//                        teamRespawnPoint.clear();
+//                    }
+//                    if (!(teamRespawnLimit.isEmpty())) {
+//                        teamRespawnLimit.clear();
+//                    }
+//                    if (!(playerDeathCount.isEmpty())) {
+//                        playerDeathCount.clear();
+//                    }
+//
+//                    if (!(friendlyfire.isEmpty())){
+//                        friendlyfire.clear();
+//                    }
+//
+//                    if (!(KeepInvenBeforeEvent.isEmpty())){
+//                        KeepInvenBeforeEvent.clear();
+//                    }
+//
+//
+//                    eventopen = false;
+//                    eventlocked = false;
+//                    eventlocation = null;
+//                    LobbyLocation = null;
+//                    EventLeaders.clear();
+//
+//                    eventGamemode = GameMode.SURVIVAL;
+//
+//
+//
+//                    KeepInvenToggledEM = false;
+//
+//
+//                    for (Player p : Bukkit.getOnlinePlayers()) {
+//                        if (currentEvent.contains(p.getUniqueId())) {
+//                            if (KeepInvenBeforeEvent.contains(p)){
+//                                if (PlayerNameData.filegetdata(p, "keepinven") == null) {
+//                                    ChangeData.changedatac(p, "keepinven", "true");
+//                                }
+//                            } else {
+//                                if (!(PlayerNameData.filegetdata(p, "keepinven") == null)) {
+//                                    ChangeData.changedatac(p, "keepinven", null);
+//                                }
+//                            }
+//                            p.getInventory().clear();
+//                            p.setGameMode(GameMode.SURVIVAL);
+//                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawn " + p.getName());
 //                        }
 //                    }
-//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have toggled keep inventory for the event");
-
-
-
-                } else if (args[0].equalsIgnoreCase("healthregen")) {
-                    if (healthregen == true) {
-                        healthregen = false;
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have enabled natural regen");
-                    } else {
-                        healthregen = true;
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have disabled natural regen");
-                    }
-                } else if (args[0].equalsIgnoreCase("list")) {
-
-
-                    StringBuilder stringOnline = new StringBuilder();
-
-                    for (int i = 0; i < currentEvent.size(); i++) {
-                        stringOnline.append(Bukkit.getServer().getPlayer(currentEvent.get(i)).getDisplayName() + ", ");
-                    }
-
-                    sender.sendMessage(ChatColor.AQUA + "There are currently, " + currentEvent.size() + " players in the event!");
-                    sender.sendMessage(ChatColor.YELLOW + "All online players: " + ChatColor.RESET + stringOnline.toString());
-
-
-                } else if (args[0].equalsIgnoreCase("togglepvp")) {
-
-
-                    if (PVPToggledEM) {
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-                                //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has toggled your !");
-                                    Bukkit.dispatchCommand(p, "togglepvp");
-                            }
-                        }
-                        PVPToggledEM = false;
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA +  " You have toggled PVP off for the event");
-
-
-                    } else {
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-                               // p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has toggled into PVP mode!");
-                                    Bukkit.dispatchCommand(p, "togglepvp");
-                            }
-                        }
-                        PVPToggledEM = true;
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA +  " You have toggled PVP on for the event");
-                    }
-                } else if (args[0].equalsIgnoreCase("freeze")) {
-                    if (Freeze.Frozen.isEmpty()) {
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-                                if (!(Freeze.Frozen.contains(p.getUniqueId()))) {
-                                    Freeze.Frozen.add(p.getUniqueId());
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has frozen you!");
-                                }
-
-                            }
-                        }
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "You have frozen everyone within the event.");
-                    } else {
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-                                if (Freeze.Frozen.contains(p.getUniqueId())) {
-                                    Freeze.Frozen.remove(p.getUniqueId());
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has unfrozen you!");
-                                }
-                            }
-                        }
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "You have unfrozen everyone within the event.");
-                    }
-
-                } else if (args[0].equalsIgnoreCase("lock")) {
-                    if (eventlocked) {
-                        eventlocked = false;
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "The event has been unlocked");
-                    } else {
-                        eventlocked = true;
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "The event has been locked");
-                    }
-                } else if (args[0].equalsIgnoreCase("blockbreak")) {
-
-
-                    if (DenyBlockBreak.DenyBlockBreak.isEmpty()) {
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-                                if (!(DenyBlockBreak.DenyBlockBreak.contains(p.getUniqueId()))) {
-                                    DenyBlockBreak.DenyBlockBreak.add(p);
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can no longer place/break blocks within this event.");
-                                }
-                            }
-                        }
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "You have prevented everyone within the event from breaking blocks.");
-                    } else {
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-                                if (!(DenyBlockBreak.DenyBlockBreak.contains(p.getUniqueId()))) {
-                                    DenyBlockBreak.DenyBlockBreak.remove(p);
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can now place/break blocks within this event.");
-                                }
-
-                            }
-                        }
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "Everyone within the event can now break blocks.");
-                    }
-
-                } else if (args[0].equalsIgnoreCase("setlobby")) {
-
-
-
-                    LobbyLocation = ((Player) sender).getLocation();
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've set the event lobby spawn.");
-
-
-                } else {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /eventmode for help!");
-                }
+//                    currentEvent.clear();
+//                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server-Announcement&e]&f" +
+//                            " &aThe event has been closed! Thank you to everyone for participating, until next time!"));
+//                    return false;
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("heal")) {
+//                    for (Player p : Bukkit.getOnlinePlayers()) {
+//                        if (currentEvent.contains(p.getUniqueId())) {
+//
+//
+//                            p.setHealth(20.0);
+//                            p.setFoodLevel(20);
+//
+//                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has healed you!");
+//                        }
+//                    }
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've healed everyone within the event");
+//
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("tpall")) {
+//                    for (Player p : Bukkit.getOnlinePlayers()) {
+//                        if (currentEvent.contains(p.getUniqueId())) {
+//
+//                            p.teleport(((Player) sender).getLocation());
+//
+//                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has teleported you to his location!");
+//
+//                        }
+//                    }
+//
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've teleported everyone to you");
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("clearinven")) {
+//                    for (Player p : Bukkit.getOnlinePlayers()) {
+//                        if (currentEvent.contains(p.getUniqueId())) {
+//                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You inventory has been cleared by an admin");
+//                            p.getInventory().clear();
+//                        }
+//                    }
+//
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've cleared all inventories");
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("keepinven")) {
+//                    if (KeepInvenToggledEM){
+//                        KeepInvenToggledEM = false;
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//                                if (!(PlayerNameData.filegetdata(p, "keepinven") == null)) {
+//                                    ChangeData.changedatac(p, "keepinven", null);
+//                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f ") +ChatColor.AQUA + "You will now drop your items upon death!");
+//                                }
+//                            }
+//                        }
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have toggled keep inventory off for the event");
+//                        return true;
+//
+//                    } else {
+//                        KeepInvenToggledEM = true;
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//
+//                                if (PlayerNameData.filegetdata(p, "keepinven") == null) {
+//                                    ChangeData.changedatac(p, "keepinven", "true");
+//                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f ") +ChatColor.AQUA + "You will no longer drop your items upon death!");
+//                                }
+//                            }
+//                        }
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have toggled keep inventory on for the event");
+//                        return true;
+//                    }
+//
+////                    for (Player p : Bukkit.getOnlinePlayers()) {
+////                        if (pvpeo.contains(p.getUniqueId())) {
+////
+////                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "togglekeepinven " + p.getName());
+////                        }
+////                    }
+////                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have toggled keep inventory for the event");
+//
+//
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("healthregen")) {
+//                    if (healthregen == true) {
+//                        healthregen = false;
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have enabled natural regen");
+//                    } else {
+//                        healthregen = true;
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have disabled natural regen");
+//                    }
+//                }
+//                else if (args[0].equalsIgnoreCase("list")) {
+//
+//
+//                    StringBuilder stringOnline = new StringBuilder();
+//
+//                    for (int i = 0; i < currentEvent.size(); i++) {
+//                        stringOnline.append(Bukkit.getServer().getPlayer(currentEvent.get(i)).getDisplayName() + ", ");
+//                    }
+//
+//                    sender.sendMessage(ChatColor.AQUA + "There are currently, " + currentEvent.size() + " players in the event!");
+//                    sender.sendMessage(ChatColor.YELLOW + "All online players: " + ChatColor.RESET + stringOnline.toString());
+//
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("togglepvp")) {
+//
+//
+//                    if (PVPToggledEM) {
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//                                //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has toggled your !");
+//                                    Bukkit.dispatchCommand(p, "togglepvp");
+//                            }
+//                        }
+//                        PVPToggledEM = false;
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA +  " You have toggled PVP off for the event");
+//
+//
+//                    } else {
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//                               // p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has toggled into PVP mode!");
+//                                    Bukkit.dispatchCommand(p, "togglepvp");
+//                            }
+//                        }
+//                        PVPToggledEM = true;
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA +  " You have toggled PVP on for the event");
+//                    }
+//                }
+//                else if (args[0].equalsIgnoreCase("freeze")) {
+//                    if (Freeze.Frozen.isEmpty()) {
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//                                if (!(Freeze.Frozen.contains(p.getUniqueId()))) {
+//                                    Freeze.Frozen.add(p.getUniqueId());
+//                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has frozen you!");
+//                                }
+//
+//                            }
+//                        }
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "You have frozen everyone within the event.");
+//                    } else {
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//                                if (Freeze.Frozen.contains(p.getUniqueId())) {
+//                                    Freeze.Frozen.remove(p.getUniqueId());
+//                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has unfrozen you!");
+//                                }
+//                            }
+//                        }
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "You have unfrozen everyone within the event.");
+//                    }
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("lock")) {
+//                    if (eventlocked) {
+//                        eventlocked = false;
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "The event has been unlocked");
+//                    } else {
+//                        eventlocked = true;
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "The event has been locked");
+//                    }
+//                }
+//                else if (args[0].equalsIgnoreCase("blockbreak")) {
+//
+//
+//                    if (DenyBlockBreak.DenyBlockBreak.isEmpty()) {
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//                                if (!(DenyBlockBreak.DenyBlockBreak.contains(p.getUniqueId()))) {
+//                                    DenyBlockBreak.DenyBlockBreak.add(p);
+//                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can no longer place/break blocks within this event.");
+//                                }
+//                            }
+//                        }
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "You have prevented everyone within the event from breaking blocks.");
+//                    } else {
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//                                if (!(DenyBlockBreak.DenyBlockBreak.contains(p.getUniqueId()))) {
+//                                    DenyBlockBreak.DenyBlockBreak.remove(p);
+//                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can now place/break blocks within this event.");
+//                                }
+//
+//                            }
+//                        }
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + "Everyone within the event can now break blocks.");
+//                    }
+//
+//                }
+//                else if (args[0].equalsIgnoreCase("setlobby")) {
+//
+//
+//
+//                    LobbyLocation = ((Player) sender).getLocation();
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've set the event lobby spawn.");
+//
+//
+//                } else {
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /eventmode for help!");
+//                }
 
 //endregion
 
@@ -344,44 +356,45 @@ public class pvpe implements Listener, CommandExecutor {
 //region Two args
 
 
-                if (!(eventopen) && !(args[0].equalsIgnoreCase("open")) && !(args[0].equalsIgnoreCase("help"))) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event is closed");
-                    return false;
-                }
-                if (args[1] == null) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /eventmode for help!");
-                    return false;
-                }
+//                if (!(eventopen) && !(args[0].equalsIgnoreCase("open")) && !(args[0].equalsIgnoreCase("help"))) {
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event is closed");
+//                    return false;
+//                }
+//                if (args[1] == null) {
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /eventmode for help!");
+//                    return false;
+//                }
                 Player target = Bukkit.getPlayerExact(args[1]);
-                if (args[0].equalsIgnoreCase("add")) {
-                    if (target == null) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " is offline!");
-                        return false;
-                    }
-                    if (currentEvent.contains(target.getUniqueId())) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Player already within list!");
-                        return false;
-                    }
-
-
-                    if (!(currentEvent.contains(((Player) sender).getUniqueId()))) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + target.getDisplayName() + " has joined the event!");
-                    }
-
-                    target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has entered you into an event.");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "sudo " + target.getName() + " eventjoin");
-                } else if (args[0].equalsIgnoreCase("remove")) {
-                    if (target == null) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " is offline!");
-                        return false;
-                    }
-                    if (!(currentEvent.contains(target.getUniqueId()))) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Player not within list!");
-                        return false;
-                    }
-                    target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has removed you from the event.");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "sudo " + target.getName() + " eventleave");
-                } else if (args[0].equalsIgnoreCase("stogglepvp")) {
+//                if (args[0].equalsIgnoreCase("add")) {
+//                    if (target == null) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " is offline!");
+//                        return false;
+//                    }
+//                    if (currentEvent.contains(target.getUniqueId())) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Player already within list!");
+//                        return false;
+//                    }
+//
+//
+//                    if (!(currentEvent.contains(((Player) sender).getUniqueId()))) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + target.getDisplayName() + " has joined the event!");
+//                    }
+//
+//                    target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has entered you into an event.");
+//                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "sudo " + target.getName() + " eventjoin");
+//                } else if (args[0].equalsIgnoreCase("remove")) {
+//                    if (target == null) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " is offline!");
+//                        return false;
+//                    }
+//                    if (!(currentEvent.contains(target.getUniqueId()))) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Player not within list!");
+//                        return false;
+//                    }
+//                    target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has removed you from the event.");
+//                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "sudo " + target.getName() + " eventleave");
+//                }
+                else if (args[0].equalsIgnoreCase("stogglepvp")) {
                     if (target == null) {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " is offline!");
                         return false;
@@ -521,7 +534,6 @@ public class pvpe implements Listener, CommandExecutor {
                             sender.sendMessage(ChatColor.AQUA + "/eventmode heal - Heals everyone within the event");
                             break;
                     }
-
                 } else {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /eventmode for help!");
                 }

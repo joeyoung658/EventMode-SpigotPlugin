@@ -67,11 +67,14 @@ public class Main extends JavaPlugin implements Listener {
         eventModeAdminCommands.register("add", new addPlayerToEventCmd());
         eventModeAdminCommands.register("remove", new removePlayerFromEventCmd());
         eventModeAdminCommands.register("setlobby", new setLobbyCmd());
+        eventModeAdminCommands.register("blockbreak", new toggleBlockBreak());
+
 
 
 
         getCommand("eventmode").setExecutor(eventModeAdminCommands);
         getCommand("eventmode").setTabCompleter(new EventModeAdminTabCompleter());
+
     }
 
 
