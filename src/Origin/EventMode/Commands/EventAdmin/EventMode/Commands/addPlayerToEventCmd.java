@@ -20,7 +20,7 @@ public class addPlayerToEventCmd implements EventModeAdminInterface {
         }
         Player p = (Player) sender;
         EventMode eventMode = new EventMode();
-
+        //todo broke
         boolean result =  eventMode.addPlayerToEvent(target,true, true);
 
         if (result){

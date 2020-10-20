@@ -2,6 +2,7 @@ package Origin.EventMode.Commands.EventPlayer;
 
 import England.Origin.FirstPlugin.Data.ChangeData;
 import England.Origin.FirstPlugin.Data.PlayerNameData;
+import Origin.EventMode.EventMode;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -24,51 +25,13 @@ public class eventleave implements CommandExecutor {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +"This command can only be run by a player!");
                 return true;
             } else {
-                if (eventopen) {
+                EventMode eventMode = new EventMode();
+                boolean result = eventMode.removePlayerFromEvent((Player) sender);
 
-                    if (EventJoinWarning.contains(sender)){
-                        EventJoinWarning.remove(sender);
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +ChatColor.AQUA + "You have canceled your entry into the event!");
-                        return false;
-                    }
-
-                    if (currentEvent.contains(((Player) sender).getUniqueId())) {
-
-                        currentEvent.remove(((Player) sender).getUniqueId());
-
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            if (currentEvent.contains(p.getUniqueId())) {
-                                p.sendMessage( ((Player) sender).getDisplayName() + ChatColor.AQUA + " has left the event!");
-                            }
-                            if (EventLeaders.contains(p)){
-                                p.sendMessage( ((Player) sender).getDisplayName() +  ChatColor.AQUA +  " has left the event. "  + currentEvent.size() + " players are now in Event mode.");
-                            }
-                        }
-
-                        if (KeepInvenBeforeEvent.contains(((Player) sender).getPlayer())){
-                            if (PlayerNameData.filegetdata(((Player) sender).getPlayer(), "keepinven") == null) {
-                                ChangeData.changedatac(((Player) sender).getPlayer(), "keepinven", "true");
-                            }
-                        } else {
-                            if (!(PlayerNameData.filegetdata(((Player) sender).getPlayer(), "keepinven") == null)) {
-                                ChangeData.changedatac(((Player) sender).getPlayer(), "keepinven", null);
-                            }
-                        }
-
-
-                        ((Player) sender).getInventory().clear();
-                        if (((Player) sender).getGameMode() != GameMode.SURVIVAL) {
-                            ((Player) sender).getPlayer().setGameMode(GameMode.SURVIVAL);
-                        }
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawn " + sender.getName());
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Your inventory has been cleared, Command use has been restored! Thank you for being apart of the event.");
-                        return true;
-                    } else {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +ChatColor.AQUA + "Error: You're not in an event");
-                    }
+                if (!(result)) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
+                            + ChatColor.AQUA + "Error: You're unable to leave the event at this time!");
                 }
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +ChatColor.AQUA + "Sorry but there are no events open at this moment in time.");
-                return true;
             }
 
         }
@@ -77,3 +40,48 @@ public class eventleave implements CommandExecutor {
     }
 
 }
+//                if (eventopen) {
+//
+//                    if (EventJoinWarning.contains(sender)){
+//                        EventJoinWarning.remove(sender);
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +ChatColor.AQUA + "You have canceled your entry into the event!");
+//                        return false;
+//                    }
+//
+//                    if (currentEvent.contains(((Player) sender).getUniqueId())) {
+//
+//                        currentEvent.remove(((Player) sender).getUniqueId());
+//
+//                        for (Player p : Bukkit.getOnlinePlayers()) {
+//                            if (currentEvent.contains(p.getUniqueId())) {
+//                                p.sendMessage( ((Player) sender).getDisplayName() + ChatColor.AQUA + " has left the event!");
+//                            }
+//                            if (EventLeaders.contains(p)){
+//                                p.sendMessage( ((Player) sender).getDisplayName() +  ChatColor.AQUA +  " has left the event. "  + currentEvent.size() + " players are now in Event mode.");
+//                            }
+//                        }
+//
+//                        if (KeepInvenBeforeEvent.contains(((Player) sender).getPlayer())){
+//                            if (PlayerNameData.filegetdata(((Player) sender).getPlayer(), "keepinven") == null) {
+//                                ChangeData.changedatac(((Player) sender).getPlayer(), "keepinven", "true");
+//                            }
+//                        } else {
+//                            if (!(PlayerNameData.filegetdata(((Player) sender).getPlayer(), "keepinven") == null)) {
+//                                ChangeData.changedatac(((Player) sender).getPlayer(), "keepinven", null);
+//                            }
+//                        }
+//
+//
+//                        ((Player) sender).getInventory().clear();
+//                        if (((Player) sender).getGameMode() != GameMode.SURVIVAL) {
+//                            ((Player) sender).getPlayer().setGameMode(GameMode.SURVIVAL);
+//                        }
+//                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawn " + sender.getName());
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Your inventory has been cleared, Command use has been restored! Thank you for being apart of the event.");
+//                        return true;
+//                    } else {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +ChatColor.AQUA + "Error: You're not in an event");
+//                    }
+//                }
+//                sender.sendMessage(ChatColor.translateAlternateColorCodes('&' , "&e[&4Server&e]&f")  +ChatColor.AQUA + "Sorry but there are no events open at this moment in time.");
+//                return true;

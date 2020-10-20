@@ -6,6 +6,7 @@ import England.Origin.FirstPlugin.Player.Freeze;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import static England.Origin.FirstPlugin.Data.PVPToggleContains.PVPtoggle;
@@ -320,6 +321,10 @@ public class EventMode {
         }
     }
 
+    public boolean hadEventJoinWarningMsg(Player player){
+        return EventJoinWarning.contains(player);
+    }
+
     /**
      * Adds a player to the current active event
      * @param target Player in which should be added to the event
@@ -432,4 +437,9 @@ public class EventMode {
         target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Your inventory has been cleared, Command use has been restored! Thank you for being apart of the event.");
         return true;
     }
+
+    public void setLobby(Location lobby){
+        LobbyLocation = lobby;
+    }
+
 }

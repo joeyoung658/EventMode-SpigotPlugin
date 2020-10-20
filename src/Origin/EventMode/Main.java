@@ -3,6 +3,7 @@ package Origin.EventMode;
 
 import Origin.EventMode.Commands.EventAdmin.EventMode.Commands.*;
 import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminCommandHandler;
+import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminTabCompleter;
 import Origin.EventMode.Commands.EventAdmin.EventMode.apvpe;
 import Origin.EventMode.Commands.EventAdmin.EventMode.eventModeAdminCmd;
 import Origin.EventMode.Commands.EventAdmin.Teams.teams;
@@ -65,10 +66,12 @@ public class Main extends JavaPlugin implements Listener {
         eventModeAdminCommands.register("lock", new toggleEventLock());
         eventModeAdminCommands.register("add", new addPlayerToEventCmd());
         eventModeAdminCommands.register("remove", new removePlayerFromEventCmd());
+        eventModeAdminCommands.register("setlobby", new setLobbyCmd());
 
 
 
         getCommand("eventmode").setExecutor(eventModeAdminCommands);
+        getCommand("eventmode").setTabCompleter(new EventModeAdminTabCompleter());
     }
 
 

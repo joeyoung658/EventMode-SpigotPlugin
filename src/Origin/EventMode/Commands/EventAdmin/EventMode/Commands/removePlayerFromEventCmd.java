@@ -22,7 +22,7 @@ public class removePlayerFromEventCmd implements EventModeAdminInterface {
         EventMode eventMode = new EventMode();
 
         Boolean result = eventMode.removePlayerFromEvent(target);
-
+        //todo broken (Same with all multi argument commands)
         if (result){
             target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has removed you from the event.");
         } else {
