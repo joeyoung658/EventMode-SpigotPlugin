@@ -26,3 +26,23 @@ public class freezeAllPlayersCmd implements EventModeAdminInterface
         return false;
     }
 }
+
+//todo make it possible to freeze just one player within this command handler
+//else if (args[0].equalsIgnoreCase("freeze")) {
+//
+//        if (target == null) {
+//        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " is offline!");
+//        return false;
+//        }
+//        if (!(currentEvent.contains(target.getUniqueId()))) {
+//        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Player not within event!");
+//        return false;
+//        }
+//        if (!(Freeze.Frozen.contains(target.getUniqueId()))) {
+//        Freeze.Frozen.add(target.getUniqueId());
+//        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have frozen " + target.getDisplayName());
+//        } else {
+//        Freeze.Frozen.remove(target.getUniqueId());
+//        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have unfrozen " + target.getDisplayName());
+//        }
+//        }

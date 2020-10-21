@@ -4,6 +4,7 @@ import England.Origin.FirstPlugin.Data.ChangeData;
 import England.Origin.FirstPlugin.Data.PlayerNameData;
 import England.Origin.FirstPlugin.Player.DenyBlockBreak;
 import England.Origin.FirstPlugin.Player.Freeze;
+import Origin.EventMode.Data.StringToInt;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -57,16 +58,16 @@ public class EventMode {
         }
     }
 
-    public void addLeader(Player player){
-        EventLeaders.add(player);
+    public boolean addLeader(Player player){
+        return EventLeaders.add(player);
     }
 
     /**
      * Removes the player as an eventleader
      * @param player Player which to be removed as leader
      */
-    public void removeLeader(Player player){
-        EventLeaders.remove(player);
+    public boolean removeLeader(Player player){
+       return EventLeaders.remove(player);
     }
 
     /**
@@ -82,6 +83,10 @@ public class EventMode {
                 " &4Clear your inventory before you join the event! Your items and armour will be removed."));
     }
 
+    /**
+     * Checks if the event is open
+     * @return
+     */
     public boolean isEventOpen(){
         return eventopen;
     }
@@ -270,6 +275,10 @@ public class EventMode {
         }
     }
 
+    /**
+     * Toggles if all players within the event are frozen or not
+     * @return
+     */
     public boolean freezeAllPlayers(){
         //todo handle this within eventmode plugin as could cause issues with main freeze from FirstPLugin
         if (Freeze.Frozen.isEmpty()) {
@@ -298,7 +307,7 @@ public class EventMode {
 
     /**
      * Toggles of the event is locked or closed.
-     * @return
+     * @return True - On / False - Off
      */
     public boolean toggleEventLock(){
         if (eventlocked) {
@@ -310,18 +319,29 @@ public class EventMode {
         }
     }
 
+    /**
+     * Checks if the event is locked
+     * @return True/False
+     */
     public boolean isEventLocked(){
         return eventlocked;
     }
 
+
+    /**
+     * Checks if a player is in an event
+     * @param player
+     * @return True - Player is in the event False - Player isn't in the event
+     */
     public boolean isPlayerInEvent(Player player){
-        if (currentEvent.contains(player.getUniqueId())){
-            return true;
-        } else {
-            return false;
-        }
+        return (currentEvent.contains(player.getUniqueId()));
     }
 
+    /**
+     * Checks if the player has had a warning message about thier inventory being cleared
+     * @param player
+     * @return True - They've had the warning False - No warning given
+     */
     public boolean hadEventJoinWarningMsg(Player player){
         return EventJoinWarning.contains(player);
     }
@@ -471,6 +491,31 @@ public class EventMode {
                 }
             }
             return false;
+        }
+    }
+
+    /**
+     * Set's events respawn delay in X
+     * @param delay
+     * @return
+     */
+    public int setRespawnDelay(String delay){
+        eventRespawnDelay = StringToInt.stringToInt(delay);
+        return eventRespawnDelay;
+    }
+
+    /**
+     * Sets the gamemode for the event
+     * @param mode
+     */
+    public void setGameMode(GameMode mode){
+        eventGamemode = mode;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (currentEvent.contains(p.getUniqueId())) {
+                p.setGameMode(mode);
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
+                        + ChatColor.AQUA + "Your game mode has been updated to" + mode.toString() + "mode.");
+            }
         }
     }
 }

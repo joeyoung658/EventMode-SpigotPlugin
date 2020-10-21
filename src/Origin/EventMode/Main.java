@@ -51,8 +51,10 @@ public class Main extends JavaPlugin implements Listener {
     public void registerEventAdminCommands(){
         EventModeAdminCommandHandler eventModeAdminCommands = new EventModeAdminCommandHandler();
 
+        //Main
         eventModeAdminCommands.register("eventmode", new eventModeAdminCmd());
 
+        //Sub
         eventModeAdminCommands.register("open", new openCmd());
         eventModeAdminCommands.register("close", new closeCmd());
         eventModeAdminCommands.register("heal", new healCmd());
@@ -68,7 +70,11 @@ public class Main extends JavaPlugin implements Listener {
         eventModeAdminCommands.register("remove", new removePlayerFromEventCmd());
         eventModeAdminCommands.register("setlobby", new setLobbyCmd());
         eventModeAdminCommands.register("blockbreak", new toggleBlockBreak());
-
+        eventModeAdminCommands.register("stogglepvp", new togglePlayerPVP());
+        eventModeAdminCommands.register("setrespawndelay", new setRespawnDelay());
+        eventModeAdminCommands.register("addEventLeader", new addEventLeader());
+        eventModeAdminCommands.register("gm", new setEventGameMode());
+        eventModeAdminCommands.register("help", new helpCmd());
 
 
 
