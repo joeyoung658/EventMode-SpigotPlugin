@@ -17,7 +17,7 @@ public class togglePlayerPVP implements EventModeAdminInterface
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-        if((args.length == 1) || args.length > 2){
+        if(args.length < 2){
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Error: Correct usage /eventmode [stoggle] [plyaername]");
             return false;
         }

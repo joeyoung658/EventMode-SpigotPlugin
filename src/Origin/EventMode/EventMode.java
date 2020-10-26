@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import static England.Origin.FirstPlugin.Data.PVPToggleContains.PVPtoggle;
 import static Origin.EventMode.Contants.*;
@@ -354,13 +355,16 @@ public class EventMode {
      * @return
      */
     public boolean addPlayerToEvent(Player target, Boolean eventJoinWarningBypass, Boolean eventLockBypass){
-        if ((!(isEventOpen())) && (isPlayerInEvent(target))){
+        if (!(isEventOpen())){
             return false;
         }
         if (!(eventLockBypass)){
             if (isEventLocked()){
                 return false;
             }
+        }
+        if (isPlayerInEvent(target)){
+            return false;
         }
         if (!(eventJoinWarningBypass)){
             if (!(EventJoinWarning.contains(target))){
@@ -515,6 +519,20 @@ public class EventMode {
                 p.setGameMode(mode);
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
                         + ChatColor.AQUA + "Your game mode has been updated to" + mode.toString() + "mode.");
+            }
+        }
+    }
+
+    /**
+     * Gives the whole event an item!
+     * @param item
+     * @param qty
+     */
+    public void giveWholeEventItem(ItemStack item, int qty){
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (currentEvent.contains(p.getUniqueId())) {
+                p.getInventory().setItem(1, item);
+                p.updateInventory();
             }
         }
     }

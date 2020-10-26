@@ -11,7 +11,7 @@ import java.util.List;
 public class EventModeAdminTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String s, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("eventmode")){
+        if ((cmd.getName().equalsIgnoreCase("eventmode")) || cmd.getName().equalsIgnoreCase("em")){
             if ((sender instanceof Player) && (args.length == 1)){
                 EventModeAdminCommandHandler eventModeAdminCommands = new EventModeAdminCommandHandler();
                 List<String> newList = eventModeAdminCommands.getCommands();

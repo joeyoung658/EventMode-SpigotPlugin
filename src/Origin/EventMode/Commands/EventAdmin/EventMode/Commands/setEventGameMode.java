@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class setEventGameMode implements EventModeAdminInterface {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if((args.length == 1) || args.length > 2){
+        if(args.length < 2){
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Error: Correct usage /eventmode [gm] [0/1/2/3]");
             return false;
         }
@@ -50,6 +50,6 @@ public class setEventGameMode implements EventModeAdminInterface {
     }
     private void sendMsg(Player sender, GameMode mode){
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
-                + ChatColor.AQUA + "You've set the event to" + mode.toString() +  "mode.");
+                + ChatColor.AQUA + "You've set the event to " + mode.toString().toLowerCase() +  " mode.");
     }
 }

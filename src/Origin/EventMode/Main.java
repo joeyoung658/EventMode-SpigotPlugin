@@ -72,9 +72,10 @@ public class Main extends JavaPlugin implements Listener {
         eventModeAdminCommands.register("blockbreak", new toggleBlockBreak());
         eventModeAdminCommands.register("stogglepvp", new togglePlayerPVP());
         eventModeAdminCommands.register("setrespawndelay", new setRespawnDelay());
-        eventModeAdminCommands.register("addEventLeader", new addEventLeader());
+        eventModeAdminCommands.register("addeventleader", new addEventLeader());
         eventModeAdminCommands.register("gm", new setEventGameMode());
         eventModeAdminCommands.register("help", new helpCmd());
+        eventModeAdminCommands.register("giveitem", new givePlayersItem());
 
 
 

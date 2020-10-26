@@ -11,13 +11,14 @@ import org.bukkit.entity.Player;
 public class helpCmd implements EventModeAdminInterface {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if((args.length == 1) || args.length > 2){
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Error: Correct usage /eventmode [gm] [0/1/2/3]");
+        if(args.length < 2){
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Error: Correct usage /eventmode [help] [1/2/3]");
             return false;
         }
         Player p = (Player) sender;
         EventMode eventMode = new EventMode();
 
+        //Todo make it build the pages & get commands from eventMode handler
         String page = args[1];
         switch (page) {
             case "2":
@@ -34,10 +35,11 @@ public class helpCmd implements EventModeAdminInterface {
                 break;
             case "3":
                 sender.sendMessage(ChatColor.RED + "------------Event Mode Help Page 3/3--------------");
-                sender.sendMessage(ChatColor.AQUA + "/eventmode addleader [Player Name] - Gives given player access to all event mode commands.");
+                sender.sendMessage(ChatColor.AQUA + "/eventmode addeventleader [Player Name] - Gives given player access to all event mode commands.");
                 sender.sendMessage(ChatColor.AQUA + "/eventmode keepinven - Toggles if inventory is kept upon death.");
                 sender.sendMessage(ChatColor.AQUA + "/eventmode blockbreak - Toggles if players within the event can break blocks.");
                 sender.sendMessage(ChatColor.AQUA + "/eventmode setlobby - Sets the event lobby spawn location");
+                sender.sendMessage(ChatColor.AQUA + "/eventmode giveitem [item] [qty] - Gives an item to all players within the event");
                 sender.sendMessage(ChatColor.AQUA + "/teams - Views all team help commands");
                 break;
             default:
