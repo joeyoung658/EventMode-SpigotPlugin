@@ -4,7 +4,6 @@ package Origin.EventMode;
 import Origin.EventMode.Commands.EventAdmin.EventMode.Commands.*;
 import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminCommandHandler;
 import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminTabCompleter;
-import Origin.EventMode.Commands.EventAdmin.EventMode.apvpe;
 import Origin.EventMode.Commands.EventAdmin.EventMode.eventModeAdminCmd;
 import Origin.EventMode.Commands.EventAdmin.Teams.teams;
 import Origin.EventMode.Commands.EventPlayer.eventChat;
@@ -34,14 +33,13 @@ public class Main extends JavaPlugin implements Listener {
 
     private void registerCommands(){
         registerEventAdminCommands();
+        registerEventTeamCommands();
 
         //this.getCommand("pvpe").setExecutor(new pvpe());
-        this.getCommand("apvpe").setExecutor(new apvpe());
+        //this.getCommand("apvpe").setExecutor(new apvpe());
 
         this.getCommand("eventjoin").setExecutor(new eventjoin());
         this.getCommand("eventleave").setExecutor(new eventleave());
-
-        this.getCommand("teams").setExecutor(new teams());
 
         this.getCommand("tc").setExecutor(new teamChat());
         this.getCommand("ec").setExecutor(new eventChat());
@@ -76,11 +74,20 @@ public class Main extends JavaPlugin implements Listener {
         eventModeAdminCommands.register("gm", new setEventGameMode());
         eventModeAdminCommands.register("help", new helpCmd());
         eventModeAdminCommands.register("giveitem", new givePlayersItem());
+        eventModeAdminCommands.register("setspawn", new setEventSpawn());
+        eventModeAdminCommands.register("blockcmd", new blockCmd());
+        eventModeAdminCommands.register("unblockcmd", new unblockCmd());
 
 
 
         getCommand("eventmode").setExecutor(eventModeAdminCommands);
         getCommand("eventmode").setTabCompleter(new EventModeAdminTabCompleter());
+
+    }
+
+    public void registerEventTeamCommands(){
+        this.getCommand("teams").setExecutor(new teams());
+
 
     }
 
@@ -94,6 +101,6 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new PVP(), this);
         getServer().getPluginManager().registerEvents(new FoodRegen(), this);
         getServer().getPluginManager().registerEvents(new CommandBlock(), this);
-
+        getServer().getPluginManager().registerEvents(new DenyBlockBreak(), this);
     }
 }

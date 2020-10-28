@@ -107,8 +107,8 @@ public class PlayerRespawn implements Listener {
 
 
 
-            if (!(eventlocation == null)) {
-                event.setRespawnLocation(eventlocation);
+            if (!(eventSpawnLoc == null)) {
+                event.setRespawnLocation(eventSpawnLoc);
                 if (eventRespawnDelay == 0) {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You have respawned!");
                     return;

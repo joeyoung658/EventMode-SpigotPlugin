@@ -9,8 +9,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.List;
 
-import static Origin.EventMode.Contants.EventLeaders;
-import static Origin.EventMode.Contants.currentEvent;
+import static Origin.EventMode.Contants.*;
 
 /**
  * Created by josep on 22/08/2017.
@@ -19,7 +18,8 @@ public class CommandBlock implements Listener {
 
     @EventHandler
     public void onPlayerChat(PlayerCommandPreprocessEvent e) {
-        List<String> cmds = Main.instance.getConfig().getStringList("pvpe");
+        if (!(eventopen)) return;
+        List<String> cmds = Main.instance.getConfig().getStringList("blocked_cmds");
         Player p = e.getPlayer();
         if (p.hasPermission("<fp>.pvpe.bypass")) {
             return;

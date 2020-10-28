@@ -170,7 +170,7 @@ public class teams implements CommandExecutor {
                         return false;
                     }
 
-                    eventlocation = null;
+                    eventSpawnLoc = null;
                     teamRespawnPoint.put(args[1], ((Player) sender).getLocation());
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
                             + ChatColor.AQUA + "You've set respawn point for " + args[1]);

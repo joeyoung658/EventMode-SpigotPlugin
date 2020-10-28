@@ -24,11 +24,12 @@ public class EventMode {
      * @return
      */
     public boolean isClosedMsg(Player player){
-        if (!(eventopen)){
+        if (eventopen){
+            return false;
+        } else {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event already closed!");
-            return eventopen;
+            return true;
         }
-        return eventopen;
     }
 
     /**
@@ -120,7 +121,7 @@ public class EventMode {
         }
         eventopen = false;
         eventlocked = false;
-        eventlocation = null;
+        eventSpawnLoc = null;
         LobbyLocation = null;
         EventLeaders.clear();
 
@@ -474,11 +475,11 @@ public class EventMode {
      */
     public boolean toggleBlockBreak(){
         //todo tidy this up
-        if (DenyBlockBreak.DenyBlockBreak.isEmpty()) {
+        if (DenyBlockBreak.isEmpty()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (currentEvent.contains(p.getUniqueId())) {
-                    if (!(DenyBlockBreak.DenyBlockBreak.contains(p.getUniqueId()))) {
-                        DenyBlockBreak.DenyBlockBreak.add(p);
+                    if (!(DenyBlockBreak.contains(p.getUniqueId()))) {
+                        DenyBlockBreak.add(p);
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can no longer place/break blocks within this event.");
                     }
                 }
@@ -487,8 +488,8 @@ public class EventMode {
         } else {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (currentEvent.contains(p.getUniqueId())) {
-                    if (!(DenyBlockBreak.DenyBlockBreak.contains(p.getUniqueId()))) {
-                        DenyBlockBreak.DenyBlockBreak.remove(p);
+                    if (!(DenyBlockBreak.contains(p.getUniqueId()))) {
+                        DenyBlockBreak.remove(p);
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You can now place/break blocks within this event.");
                     }
 
@@ -531,9 +532,17 @@ public class EventMode {
     public void giveWholeEventItem(ItemStack item, int qty){
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (currentEvent.contains(p.getUniqueId())) {
-                p.getInventory().setItem(1, item);
+                p.getInventory().setItem(qty, item);
                 p.updateInventory();
             }
         }
+    }
+
+    /**
+     * Sets the event spawn location
+     * @param location
+     */
+    public void setSpawn(Location location){
+        eventSpawnLoc = location;
     }
 }

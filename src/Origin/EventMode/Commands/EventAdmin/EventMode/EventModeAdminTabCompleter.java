@@ -15,6 +15,7 @@ public class EventModeAdminTabCompleter implements TabCompleter {
             if ((sender instanceof Player) && (args.length == 1)){
                 EventModeAdminCommandHandler eventModeAdminCommands = new EventModeAdminCommandHandler();
                 List<String> newList = eventModeAdminCommands.getCommands();
+                newList.remove("eventmode");
                 if (newList.isEmpty()){
                     return null;
                 } else {

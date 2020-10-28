@@ -8,10 +8,6 @@ commands:
   eventmode:
       useage: /<command>
       aliases: [em]
-  apvpe:
-      description: Admin pvp event commands
-      useage: /<command>
-      aliases: [aeventmode, aem]
   eventjoin:
       description: Allows a player to join an event when its open
   eventleave:

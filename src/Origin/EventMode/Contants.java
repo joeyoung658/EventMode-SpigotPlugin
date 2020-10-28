@@ -12,7 +12,7 @@ import java.util.*;
 public class Contants {
 
     public static ArrayList<UUID> currentEvent = new ArrayList<>();
-    public static Location eventlocation = null;
+    public static Location eventSpawnLoc = null;
     public static Boolean healthregen = false;
     public static Boolean eventopen = false;
     public static ArrayList<Player> EventJoinWarning = new ArrayList<>();
@@ -34,6 +34,8 @@ public class Contants {
     public static ArrayList<String> friendlyfire = new ArrayList<>();
 
     public static GameMode eventGamemode = GameMode.SURVIVAL;
+
+    public static ArrayList<Player> DenyBlockBreak = new ArrayList<>();
 
 
 }
