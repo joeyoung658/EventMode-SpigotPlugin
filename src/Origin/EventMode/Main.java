@@ -5,7 +5,8 @@ import Origin.EventMode.Commands.EventAdmin.EventMode.Commands.*;
 import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminCommandHandler;
 import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminTabCompleter;
 import Origin.EventMode.Commands.EventAdmin.EventMode.eventModeAdminCmd;
-import Origin.EventMode.Commands.EventAdmin.Teams.teams;
+import Origin.EventMode.Commands.EventAdmin.Teams.TeamsCommandHandler;
+import Origin.EventMode.Commands.EventAdmin.Teams.*;
 import Origin.EventMode.Commands.EventPlayer.eventChat;
 import Origin.EventMode.Commands.EventPlayer.eventjoin;
 import Origin.EventMode.Commands.EventPlayer.eventleave;
@@ -86,8 +87,18 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public void registerEventTeamCommands(){
-        this.getCommand("teams").setExecutor(new teams());
+        //this.getCommand("teams").setExecutor(new teams());
 
+        TeamsCommandHandler teamsCommandHandler = new TeamsCommandHandler();
+
+        //Main
+        teamsCommandHandler.register("teams", new eventTeamsCmd());
+
+
+
+
+        getCommand("teams").setExecutor(teamsCommandHandler);
+        getCommand("teams").setTabCompleter(new TeamsTabCompleter());
 
     }
 

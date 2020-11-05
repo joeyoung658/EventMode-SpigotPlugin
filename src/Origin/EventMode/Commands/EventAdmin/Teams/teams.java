@@ -18,30 +18,32 @@ import static Origin.EventMode.Contants.*;
  */
 public class teams implements CommandExecutor {
 
+    //todo move to a nice command handler thing
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (cmd.getName().equalsIgnoreCase("teams")) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage("This command can only be run by players!");
-                return true;
-            }
-
-            if (!(EventLeaders.contains(sender))) {
-                if (!(sender.hasPermission("<fp>.apvpe"))) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "This is a Admin + command only!");
-                    return false;
-                }
-            }
-
-            if (eventopen) {
-                if (!(sender.isOp())) {
-                    if (!(EventLeaders.contains(sender))) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f ") +ChatColor.RED + "You are not a team leader!");
-                        return false;
-                    }
-                }
-            }
+//        if (cmd.getName().equalsIgnoreCase("teams")) {
+//            if (!(sender instanceof Player)) {
+//                sender.sendMessage("This command can only be run by players!");
+//                return true;
+//            }
+//
+//            if (!(EventLeaders.contains(sender))) {
+//                if (!(sender.hasPermission("<fp>.apvpe"))) {
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "This is a Admin + command only!");
+//                    return false;
+//                }
+//            }
+//
+//            if (eventopen) {
+//                if (!(sender.isOp())) {
+//                    if (!(EventLeaders.contains(sender))) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f ") +ChatColor.RED + "You are not a team leader!");
+//                        return false;
+//                    }
+//                }
+//            }
 
             if (args.length == 1) {
                 if (!(eventopen)) {
