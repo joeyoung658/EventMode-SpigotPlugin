@@ -2,9 +2,12 @@ package Origin.EventMode;
 
 
 import Origin.EventMode.Commands.EventAdmin.EventMode.Commands.*;
+import Origin.EventMode.Commands.EventAdmin.EventMode.Commands.helpCmd;
+import Origin.EventMode.Commands.EventAdmin.EventMode.Commands.listCmd;
 import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminCommandHandler;
 import Origin.EventMode.Commands.EventAdmin.EventMode.EventModeAdminTabCompleter;
 import Origin.EventMode.Commands.EventAdmin.EventMode.eventModeAdminCmd;
+import Origin.EventMode.Commands.EventAdmin.Teams.Commands.*;
 import Origin.EventMode.Commands.EventAdmin.Teams.TeamsCommandHandler;
 import Origin.EventMode.Commands.EventAdmin.Teams.*;
 import Origin.EventMode.Commands.EventPlayer.eventChat;
@@ -12,6 +15,7 @@ import Origin.EventMode.Commands.EventPlayer.eventjoin;
 import Origin.EventMode.Commands.EventPlayer.eventleave;
 import Origin.EventMode.Commands.EventTeams.teamChat;
 import Origin.EventMode.Listeners.*;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -35,9 +39,6 @@ public class Main extends JavaPlugin implements Listener {
     private void registerCommands(){
         registerEventAdminCommands();
         registerEventTeamCommands();
-
-        //this.getCommand("pvpe").setExecutor(new pvpe());
-        //this.getCommand("apvpe").setExecutor(new apvpe());
 
         this.getCommand("eventjoin").setExecutor(new eventjoin());
         this.getCommand("eventleave").setExecutor(new eventleave());
@@ -87,14 +88,25 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public void registerEventTeamCommands(){
-        //this.getCommand("teams").setExecutor(new teams());
 
-        TeamsCommandHandler teamsCommandHandler = new TeamsCommandHandler();
 
         //Main
+        TeamsCommandHandler teamsCommandHandler = new TeamsCommandHandler();
         teamsCommandHandler.register("teams", new eventTeamsCmd());
 
-
+        //Sub
+        teamsCommandHandler.register("help", new Origin.EventMode.Commands.EventAdmin.Teams.Commands.helpCmd());
+        teamsCommandHandler.register("create", new createCmd());
+        teamsCommandHandler.register("delete", new deleteCmd());
+        teamsCommandHandler.register("clear", new clearCmd());
+        teamsCommandHandler.register("add", new addPlayerToTeamCmd());
+        teamsCommandHandler.register("remove", new removePlayerFromTeam());
+        teamsCommandHandler.register("respawndelay", new respawnDelay());
+        teamsCommandHandler.register("setspawn", new setSpawnCmd());
+        teamsCommandHandler.register("freeze", new freezeCmd());
+        teamsCommandHandler.register("respawnlimit", new respawnLimit());
+        teamsCommandHandler.register("list", new Origin.EventMode.Commands.EventAdmin.Teams.Commands.listCmd());
+        teamsCommandHandler.register("friendlyfire", new friendlyfireCmd());
 
 
         getCommand("teams").setExecutor(teamsCommandHandler);
