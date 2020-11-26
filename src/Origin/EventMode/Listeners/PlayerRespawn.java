@@ -8,6 +8,7 @@ package Origin.EventMode.Listeners;
 import England.Origin.FirstPlugin.Main;
 import England.Origin.FirstPlugin.Player.Freeze;
 import Origin.EventMode.Contants;
+import Origin.EventMode.EventMode;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -34,7 +35,8 @@ public class PlayerRespawn implements Listener {
 
             if (!(teamRespawnPoint.isEmpty())) {
 
-                teamName = getPlayerTeamName(player);
+                EventMode eventMode =  new EventMode();
+                teamName = eventMode.getPlayerTeamName(player);
                 if (teamName == null){
                     return;
                 }

@@ -4,6 +4,7 @@ import England.Origin.FirstPlugin.Data.ChangeData;
 import England.Origin.FirstPlugin.Data.PlayerNameData;
 import England.Origin.FirstPlugin.Player.DenyBlockBreak;
 import England.Origin.FirstPlugin.Player.Freeze;
+import Origin.EventMode.EventMode;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -39,9 +40,11 @@ public class PlayerLeave implements Listener {
              if (DenyBlockBreak.DenyBlockBreak.contains(player)) {
                  Freeze.Frozen.remove(player);
              }
-             if (playerWithinTeam(player)){
-                 String teamName = getPlayerTeamName(player);
-                 if (!(playerWithinTeam(player))){
+
+             EventMode eventMode =  new EventMode();
+             if (eventMode.playerWithinTeam(player)){
+                 String teamName = eventMode.getPlayerTeamName(player);
+                 if (!(eventMode.playerWithinTeam(player))){
                      return;
                  }
                  teams.get(teamName).remove(player);

@@ -545,4 +545,25 @@ public class EventMode {
     public void setSpawn(Location location){
         eventSpawnLoc = location;
     }
+
+
+    public static String getPlayerTeamName(Player player){
+        for (String key : teams.keySet()){
+            if (teams.get(key).contains(player)) {
+                return key;
+            }
+        }
+        return null;
+    }
+
+
+    public static boolean playerWithinTeam(Player player){
+        for (String key : teams.keySet()){
+            if (teams.get(key).contains(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

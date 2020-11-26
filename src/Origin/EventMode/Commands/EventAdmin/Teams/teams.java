@@ -53,16 +53,16 @@ public class teams implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("list")) {
 
 
-                    StringBuilder stringOnline = new StringBuilder();
-                    for (String key : teams.keySet()) {
-                        stringOnline.append(key.toString() + "- ");
-                        for (int i = 0; i < teams.get(key).size(); i++) {
-                            stringOnline.append(teams.get(key).get(i).getDisplayName() + ", ");
-                        }
-                    }
-
-                    sender.sendMessage(ChatColor.AQUA + "There are currently, " + teams.size() + "/" + currentEvent.size() + " people within teams whom are in event mode.");
-                    sender.sendMessage(ChatColor.YELLOW + "Team players: " + ChatColor.RESET + stringOnline.toString());
+//                    StringBuilder stringOnline = new StringBuilder();
+//                    for (String key : teams.keySet()) {
+//                        stringOnline.append(key.toString() + "- ");
+//                        for (int i = 0; i < teams.get(key).size(); i++) {
+//                            stringOnline.append(teams.get(key).get(i).getDisplayName() + ", ");
+//                        }
+//                    }
+//
+//                    sender.sendMessage(ChatColor.AQUA + "There are currently, " + teams.size() + "/" + currentEvent.size() + " people within teams whom are in event mode.");
+//                    sender.sendMessage(ChatColor.YELLOW + "Team players: " + ChatColor.RESET + stringOnline.toString());
 
 
                 } else {
@@ -81,149 +81,149 @@ public class teams implements CommandExecutor {
                 Player target = Bukkit.getPlayerExact(args[1]);
                 if (args[0].equalsIgnoreCase("create")) {
 
-                    if (teams.containsKey(args[1])){
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " has already exists!");
-                        return false;
-                    }
-
-                    teams.put(args[1],new ArrayList<>());
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " has been created.");
-                    return false;
+//                    if (teams.containsKey(args[1])){
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " has already exists!");
+//                        return false;
+//                    }
+//
+//                    teams.put(args[1],new ArrayList<>());
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " has been created.");
+//                    return false;
                 } else if (args[0].equalsIgnoreCase("delete")) {
 
 
-                    if (!(teams.containsKey(args[1]))) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " does not exists!");
-                        return false;
-                    }
-
-                    teams.remove(args[1]);
-                    teamRespawnDelay.remove(args[1]);
-                    teamRespawnPoint.remove(args[1]);
-                    playerDeathCount.clear();
-                    teamRespawnLimit.remove(args[1]);
-
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " has been removed.");
-                    return false;
+//                    if (!(teams.containsKey(args[1]))) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " does not exists!");
+//                        return false;
+//                    }
+//
+//                    teams.remove(args[1]);
+//                    teamRespawnDelay.remove(args[1]);
+//                    teamRespawnPoint.remove(args[1]);
+//                    playerDeathCount.clear();
+//                    teamRespawnLimit.remove(args[1]);
+//
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " has been removed.");
+//                    return false;
 
                 } else if (args[0].equalsIgnoreCase("clear")) {
-                    if (!(teams.containsKey(args[1]))) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " does not exists!");
-                        return false;
-                    }
-
-
-                    teams.put(args[1], new ArrayList<>());
-
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " has been cleared of players.!");
-                    return false;
+//                    if (!(teams.containsKey(args[1]))) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " does not exists!");
+//                        return false;
+//                    }
+//
+//
+//                    teams.put(args[1], new ArrayList<>());
+//
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " has been cleared of players.!");
+//                    return false;
 
                 }  else if (args[0].equalsIgnoreCase("remove")) {
 
-                    if (target == null){
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " isn't online!");
-                        return false;
-                    }
-
-                    String teamName = getPlayerTeamName(target);
-                    if (!(playerWithinTeam(target))){
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f ") +  target.getDisplayName() + ChatColor.RED  + " is not within a team!");
-                        return false;
-                    }
-
-                    teams.get(teamName).remove(target);
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f ") + target.getDisplayName()  + ChatColor.AQUA +
-                            " has been removed form the team " + teamName);
-                    return false;
+//                    if (target == null){
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + args[1] + " isn't online!");
+//                        return false;
+//                    }
+//
+//                    String teamName = getPlayerTeamName(target);
+//                    if (!(playerWithinTeam(target))){
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f ") +  target.getDisplayName() + ChatColor.RED  + " is not within a team!");
+//                        return false;
+//                    }
+//
+//                    teams.get(teamName).remove(target);
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f ") + target.getDisplayName()  + ChatColor.AQUA +
+//                            " has been removed form the team " + teamName);
+//                    return false;
                 } else if (args[0].equalsIgnoreCase("freeze")) {
 
-                    if (!(teams.containsKey(args[1]))) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " does not exists!");
-                        return false;
-                    }
-
-
-                    for (int i = 0; i < teams.get(args[1]).size(); i++) {
-
-                        if (Freeze.Frozen.contains(teams.get(args[1]).get(i).getUniqueId())) {
-                                    Freeze.Frozen.remove(teams.get(args[1]).get(i).getUniqueId());
-                                    teams.get(args[1]).get(i).sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has unfrozen you!");
-                                } else {
-                                    Freeze.Frozen.add(teams.get(args[1]).get(i).getUniqueId());
-                                    teams.get(args[1]).get(i).sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has frozen you!");
-                                }
-
-                            }
-
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") +
-                                ChatColor.AQUA + "You've toggled freeze for team " +  args[1] + ".");
-                        return true;
+//                    if (!(teams.containsKey(args[1]))) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " does not exists!");
+//                        return false;
+//                    }
+//
+//
+//                    for (int i = 0; i < teams.get(args[1]).size(); i++) {
+//
+//                        if (Freeze.Frozen.contains(teams.get(args[1]).get(i).getUniqueId())) {
+//                                    Freeze.Frozen.remove(teams.get(args[1]).get(i).getUniqueId());
+//                                    teams.get(args[1]).get(i).sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has unfrozen you!");
+//                                } else {
+//                                    Freeze.Frozen.add(teams.get(args[1]).get(i).getUniqueId());
+//                                    teams.get(args[1]).get(i).sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "An admin has frozen you!");
+//                                }
+//
+//                            }
+//
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") +
+//                                ChatColor.AQUA + "You've toggled freeze for team " +  args[1] + ".");
+//                        return true;
 
                 } else if (args[0].equalsIgnoreCase("setspawn")) {
 
-                    if (args[1].equalsIgnoreCase("clearspawns")) {
-                        teamRespawnPoint.clear();
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've restored all teams respawn points to default");
-                        return true;
-                    }
-
-                    if (!(teams.containsKey(args[1]))) {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " does not exists!");
-                        return false;
-                    }
-
-                    eventSpawnLoc = null;
-                    teamRespawnPoint.put(args[1], ((Player) sender).getLocation());
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
-                            + ChatColor.AQUA + "You've set respawn point for " + args[1]);
+//                    if (args[1].equalsIgnoreCase("clearspawns")) {
+//                        teamRespawnPoint.clear();
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "You've restored all teams respawn points to default");
+//                        return true;
+//                    }
+//
+//                    if (!(teams.containsKey(args[1]))) {
+//                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Team " + args[1] + " does not exists!");
+//                        return false;
+//                    }
+//
+//                    eventSpawnLoc = null;
+//                    teamRespawnPoint.put(args[1], ((Player) sender).getLocation());
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
+//                            + ChatColor.AQUA + "You've set respawn point for " + args[1]);
                 } else if (args[0].equalsIgnoreCase("friendlyfire")) {
 
-                    if (!(teams.containsKey(args[1]))) {
-                        sender.sendMessage(
-                                ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
-                                        + ChatColor.RED + "Team " + args[1] + " does not exists!");
-                        return false;
-                    }
-
-
-                    if (args[2].equalsIgnoreCase("on")) {
-                        if (friendlyfire.contains(args[1])) {
-                            friendlyfire.remove(args[1]);
-                            sender.sendMessage(
-                                    ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
-                                            + ChatColor.AQUA + "You've enabled friendly fire for " + args[1]);
-                        } else {
-                            sender.sendMessage(
-                                    ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
-                                            + ChatColor.AQUA + "Friendly fire for " + args[1] + " is already enabled!");
-                        }
-                    } else if (args[2].equalsIgnoreCase("off")){
-                        friendlyfire.add(args[1]);
-                        sender.sendMessage(
-                                ChatColor.translateAlternateColorCodes(
-                                        '&', "&e[&4Server&e]&f")
-                                        + ChatColor.AQUA + "You've disabled friendly fire for " + args[1]);
-                    } else {
-                        sender.sendMessage(
-                                ChatColor.translateAlternateColorCodes(
-                                        '&', "&e[&4Server&e]&f")
-                                        + ChatColor.AQUA + "Error: Correct useage - /teams friendlyfire [Team Name] [off/on]");
-                    }
-
-
-                }  else {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /teams for help!");
-                }
+//                    if (!(teams.containsKey(args[1]))) {
+//                        sender.sendMessage(
+//                                ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
+//                                        + ChatColor.RED + "Team " + args[1] + " does not exists!");
+//                        return false;
+//                    }
+//
+//
+//                    if (args[2].equalsIgnoreCase("on")) {
+//                        if (friendlyfire.contains(args[1])) {
+//                            friendlyfire.remove(args[1]);
+//                            sender.sendMessage(
+//                                    ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
+//                                            + ChatColor.AQUA + "You've enabled friendly fire for " + args[1]);
+//                        } else {
+//                            sender.sendMessage(
+//                                    ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f")
+//                                            + ChatColor.AQUA + "Friendly fire for " + args[1] + " is already enabled!");
+//                        }
+//                    } else if (args[2].equalsIgnoreCase("off")){
+//                        friendlyfire.add(args[1]);
+//                        sender.sendMessage(
+//                                ChatColor.translateAlternateColorCodes(
+//                                        '&', "&e[&4Server&e]&f")
+//                                        + ChatColor.AQUA + "You've disabled friendly fire for " + args[1]);
+//                    } else {
+//                        sender.sendMessage(
+//                                ChatColor.translateAlternateColorCodes(
+//                                        '&', "&e[&4Server&e]&f")
+//                                        + ChatColor.AQUA + "Error: Correct useage - /teams friendlyfire [Team Name] [off/on]");
+//                    }
+//
+//
+//                }  else {
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /teams for help!");
+//                }
 
         } else if (args.length == 3) {
-                if (!(eventopen)) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event is closed");
-                    return false;
-                }
-                if (args[1] == null || args[2] == null) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /team for help!");
-                    return false;
-                }
+//                if (!(eventopen)) {
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.AQUA + "Error: The event is closed");
+//                    return false;
+//                }
+//                if (args[1] == null || args[2] == null) {
+//                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[&4Server&e]&f") + ChatColor.RED + "Incorrect arguments! Type /team for help!");
+//                    return false;
+//                }
                 Player target = Bukkit.getPlayerExact(args[2]);
                 if (args[0].equalsIgnoreCase("add")){
 
@@ -342,20 +342,6 @@ public class teams implements CommandExecutor {
         return false;
     }
 
-    public static boolean playerWithinTeam(Player player){
-        for (String key : teams.keySet()){
-            if (teams.get(key).contains(player)) {
-               return true;
-           }
-       }
-       return false;
-    }
-    public static String getPlayerTeamName(Player player){
-        for (String key : teams.keySet()){
-            if (teams.get(key).contains(player)) {
-                return key;
-            }
-        }
-        return null;
-    }
+
+
 }

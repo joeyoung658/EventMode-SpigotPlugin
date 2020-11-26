@@ -15,7 +15,6 @@ import Origin.EventMode.Commands.EventPlayer.eventjoin;
 import Origin.EventMode.Commands.EventPlayer.eventleave;
 import Origin.EventMode.Commands.EventTeams.teamChat;
 import Origin.EventMode.Listeners.*;
-import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -96,14 +95,14 @@ public class Main extends JavaPlugin implements Listener {
 
         //Sub
         teamsCommandHandler.register("help", new Origin.EventMode.Commands.EventAdmin.Teams.Commands.helpCmd());
-        teamsCommandHandler.register("create", new createCmd());
-        teamsCommandHandler.register("delete", new deleteCmd());
-        teamsCommandHandler.register("clear", new clearCmd());
+        teamsCommandHandler.register("create", new createTeamCmd());
+        teamsCommandHandler.register("delete", new deleteTeamCmd());
+        teamsCommandHandler.register("clear", new clearTeamCmd());
         teamsCommandHandler.register("add", new addPlayerToTeamCmd());
         teamsCommandHandler.register("remove", new removePlayerFromTeam());
         teamsCommandHandler.register("respawndelay", new respawnDelay());
-        teamsCommandHandler.register("setspawn", new setSpawnCmd());
-        teamsCommandHandler.register("freeze", new freezeCmd());
+        teamsCommandHandler.register("setspawn", new setTeamSpawnCmd());
+        teamsCommandHandler.register("freeze", new freezeTeamCmd());
         teamsCommandHandler.register("respawnlimit", new respawnLimit());
         teamsCommandHandler.register("list", new Origin.EventMode.Commands.EventAdmin.Teams.Commands.listCmd());
         teamsCommandHandler.register("friendlyfire", new friendlyfireCmd());
